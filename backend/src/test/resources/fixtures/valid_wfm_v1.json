@@ -1,0 +1,166 @@
+{
+  "schemaVersion": "1.0",
+  "modelType": "WORKFLOW_AST",
+  "workflow": {
+    "id": "leave-request-approval",
+    "title": "Leave Request Approval",
+    "description": "Employee submits a leave request. Manager and HR approvals determine the final outcome.",
+    "language": "en",
+    "domain": "hr",
+    "sourceRequirement": "Employee submits a leave request. Manager approves or rejects it. If approved and the leave duration is more than 5 days, HR reviews it. If HR approves, the leave is confirmed. Otherwise, it is rejected."
+  },
+  "extensions": {
+    "nodeKinds": [],
+    "transitionKinds": []
+  },
+  "ast": {
+    "actors": [
+      {
+        "id": "EMPLOYEE",
+        "name": "Employee",
+        "type": "USER"
+      },
+      {
+        "id": "MANAGER",
+        "name": "Manager",
+        "type": "USER"
+      },
+      {
+        "id": "HR",
+        "name": "HR",
+        "type": "ADMIN"
+      },
+      {
+        "id": "SYSTEM",
+        "name": "System",
+        "type": "SYSTEM"
+      }
+    ],
+    "variables": [],
+    "nodes": [
+      {
+        "id": "N1",
+        "role": "START",
+        "kind": "START",
+        "title": "Start"
+      },
+      {
+        "id": "N2",
+        "role": "INPUT",
+        "kind": "SUBMIT_LEAVE_REQUEST",
+        "title": "Employee submits leave request",
+        "actorId": "EMPLOYEE"
+      },
+      {
+        "id": "N3",
+        "role": "DECISION",
+        "kind": "MANAGER_DECISION",
+        "title": "Manager decision",
+        "actorId": "MANAGER"
+      },
+      {
+        "id": "N4",
+        "role": "DECISION",
+        "kind": "CHECK_LEAVE_DURATION",
+        "title": "Leave duration is more than 5 days?",
+        "actorId": "SYSTEM"
+      },
+      {
+        "id": "N5",
+        "role": "DECISION",
+        "kind": "HR_DECISION",
+        "title": "HR decision",
+        "actorId": "HR"
+      },
+      {
+        "id": "N6",
+        "role": "OUTPUT",
+        "kind": "CONFIRM_LEAVE",
+        "title": "Leave is confirmed",
+        "actorId": "SYSTEM"
+      },
+      {
+        "id": "N7",
+        "role": "OUTPUT",
+        "kind": "REJECT_LEAVE",
+        "title": "Leave is rejected",
+        "actorId": "SYSTEM"
+      },
+      {
+        "id": "N8",
+        "role": "END",
+        "kind": "END",
+        "title": "End"
+      }
+    ],
+    "transitions": [
+      {
+        "id": "T1",
+        "from": "N1",
+        "to": "N2",
+        "semantic": "DEFAULT"
+      },
+      {
+        "id": "T2",
+        "from": "N2",
+        "to": "N3",
+        "semantic": "DEFAULT"
+      },
+      {
+        "id": "T3",
+        "from": "N3",
+        "to": "N4",
+        "semantic": "YES",
+        "condition": "Manager approves"
+      },
+      {
+        "id": "T4",
+        "from": "N3",
+        "to": "N7",
+        "semantic": "NO",
+        "condition": "Manager rejects"
+      },
+      {
+        "id": "T5",
+        "from": "N4",
+        "to": "N5",
+        "semantic": "YES",
+        "condition": "Leave duration is more than 5 days"
+      },
+      {
+        "id": "T6",
+        "from": "N4",
+        "to": "N6",
+        "semantic": "NO",
+        "condition": "Leave duration is 5 days or fewer"
+      },
+      {
+        "id": "T7",
+        "from": "N5",
+        "to": "N6",
+        "semantic": "YES",
+        "condition": "HR approves"
+      },
+      {
+        "id": "T8",
+        "from": "N5",
+        "to": "N7",
+        "semantic": "NO",
+        "condition": "HR rejects"
+      },
+      {
+        "id": "T9",
+        "from": "N6",
+        "to": "N8",
+        "semantic": "SUCCESS"
+      },
+      {
+        "id": "T10",
+        "from": "N7",
+        "to": "N8",
+        "semantic": "FAILURE"
+      }
+    ],
+    "annotations": []
+  }
+}

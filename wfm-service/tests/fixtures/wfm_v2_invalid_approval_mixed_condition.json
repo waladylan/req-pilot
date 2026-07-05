@@ -1,0 +1,18 @@
+{
+  "wfmVersion": "2.0",
+  "workflowId": "invalid_approval",
+  "workflowName": "Invalid Approval",
+  "direction": "LR",
+  "nodes": [
+    {"id": "start", "kind": "START", "name": "Start", "data": {}},
+    {"id": "manager_approval", "kind": "APPROVAL", "name": "Manager Approval", "data": {}},
+    {"id": "approved", "kind": "END", "name": "Approved", "data": {}},
+    {"id": "rejected", "kind": "END", "name": "Rejected", "data": {}}
+  ],
+  "transitions": [
+    {"id": "t_start_manager", "source": "start", "target": "manager_approval", "data": {}},
+    {"id": "t_amount", "source": "manager_approval", "target": "approved", "label": "Amount > 1000", "data": {}},
+    {"id": "t_rejected", "source": "manager_approval", "target": "rejected", "label": "Rejected", "outcome": "Rejected", "data": {}}
+  ],
+  "metadata": {"source": "MOCK", "language": "en", "warnings": []}
+}

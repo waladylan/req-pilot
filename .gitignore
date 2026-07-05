@@ -1,0 +1,137 @@
+# =========================
+# Environment / secrets
+# =========================
+.env
+.env.*
+!.env.example
+
+*.pem
+*.key
+*.crt
+*.p12
+*.jks
+*.keystore
+
+# =========================
+# OS / Editor
+# =========================
+.DS_Store
+Thumbs.db
+
+.idea/
+*.iml
+
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# =========================
+# Logs
+# =========================
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# =========================
+# Node / Frontend
+# =========================
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.vite/
+frontend/.turbo/
+frontend/.next/
+frontend/coverage/
+
+# Local frontend env
+frontend/.env
+frontend/.env.*
+!frontend/.env.example
+
+# =========================
+# Java / Spring Boot Backend
+# =========================
+backend/target/
+backend/build/
+backend/out/
+backend/.gradle/
+backend/.mvn/wrapper/maven-wrapper.jar
+
+# Maven / Gradle local
+.mvn/timing.properties
+.gradle/
+
+# Spring Boot local config with secrets
+backend/src/main/resources/application-local.yml
+backend/src/main/resources/application-local.properties
+backend/src/main/resources/application-*.local.yml
+backend/src/main/resources/application-*.local.properties
+backend/src/main/resources/application-secrets.yml
+backend/src/main/resources/application-secrets.properties
+
+# =========================
+# Python / WFM Service
+# =========================
+wfm-service/.venv/
+wfm-service/venv/
+wfm-service/env/
+wfm-service/__pycache__/
+wfm-service/**/__pycache__/
+wfm-service/*.pyc
+wfm-service/**/*.pyc
+
+wfm-service/.pytest_cache/
+wfm-service/.mypy_cache/
+wfm-service/.ruff_cache/
+wfm-service/.coverage
+wfm-service/htmlcov/
+wfm-service/dist/
+wfm-service/build/
+wfm-service/*.egg-info/
+
+# Local Python env
+wfm-service/.env
+wfm-service/.env.*
+!wfm-service/.env.example
+
+# =========================
+# Docker / Runtime Data
+# =========================
+postgres-data/
+pgdata/
+data/postgres/
+docker-data/
+
+# Docker compose local override
+docker-compose.override.yml
+docker-compose.local.yml
+
+# =========================
+# Backups / Dumps
+# =========================
+backups/
+*.sql
+*.dump
+*.bak
+*.backup
+
+# =========================
+# Temporary files
+# =========================
+tmp/
+temp/
+.cache/
+*.tmp
+*.swp
+*.swo
+
+# =========================
+# Test / Coverage
+# =========================
+coverage/
+.nyc_output/
+junit-report.xml
+test-results/

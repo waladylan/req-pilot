@@ -1,0 +1,16 @@
+{
+  "wfmVersion": "2.0",
+  "workflowId": "missing_target",
+  "workflowName": "Missing Target",
+  "direction": "LR",
+  "nodes": [
+    {"id": "start", "kind": "START", "name": "Start", "data": {}},
+    {"id": "action", "kind": "ACTION", "name": "Do Work", "data": {}},
+    {"id": "end", "kind": "END", "name": "End", "data": {}}
+  ],
+  "transitions": [
+    {"id": "t_start_action", "source": "start", "target": "action", "data": {}},
+    {"id": "t_missing", "source": "action", "target": "missing", "data": {}}
+  ],
+  "metadata": {"source": "MOCK", "language": "en", "warnings": []}
+}

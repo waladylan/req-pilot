@@ -1,0 +1,45 @@
+@import "@xyflow/react/dist/style.css";
+@import "./theme.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(241, 245, 249, 0.72)),
+    hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+.react-flow {
+  --xy-edge-stroke-default: #64748b;
+  --xy-edge-stroke-width-default: 2;
+  --xy-node-border-default: 1px solid hsl(var(--border));
+  --xy-node-boxshadow-default: none;
+  --xy-controls-button-background-color-default: hsl(var(--comp-bg));
+  --xy-controls-button-background-color-hover-default: hsl(var(--muted));
+  --xy-controls-button-color-default: hsl(var(--foreground));
+  --xy-controls-button-border-color-default: hsl(var(--border));
+  background: hsl(var(--background));
+}

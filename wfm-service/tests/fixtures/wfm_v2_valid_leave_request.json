@@ -1,0 +1,23 @@
+{
+  "wfmVersion": "2.0",
+  "workflowId": "leave_request",
+  "workflowName": "Leave Request",
+  "description": "Leave request approval workflow.",
+  "direction": "LR",
+  "nodes": [
+    {"id": "start", "kind": "START", "name": "Start", "description": null, "actor": null, "data": {}},
+    {"id": "submit_leave", "kind": "USER_TASK", "name": "Submit Leave Request", "description": null, "actor": "Employee", "data": {}},
+    {"id": "manager_approval", "kind": "APPROVAL", "name": "Manager Approval", "description": null, "actor": "Manager", "data": {}},
+    {"id": "manager_approved", "kind": "DECISION", "name": "Manager Approved?", "description": null, "actor": null, "data": {}},
+    {"id": "approved", "kind": "END", "name": "Leave Approved", "description": null, "actor": null, "data": {}},
+    {"id": "rejected", "kind": "END", "name": "Leave Rejected", "description": null, "actor": null, "data": {}}
+  ],
+  "transitions": [
+    {"id": "t_start_submit", "source": "start", "target": "submit_leave", "label": null, "condition": null, "outcome": null, "data": {}},
+    {"id": "t_submit_manager", "source": "submit_leave", "target": "manager_approval", "label": null, "condition": null, "outcome": null, "data": {}},
+    {"id": "t_manager_reviewed", "source": "manager_approval", "target": "manager_approved", "label": null, "condition": null, "outcome": null, "data": {}},
+    {"id": "t_approved", "source": "manager_approved", "target": "approved", "label": "Approved", "condition": null, "outcome": "Approved", "data": {}},
+    {"id": "t_rejected", "source": "manager_approved", "target": "rejected", "label": "Rejected", "condition": null, "outcome": "Rejected", "data": {}}
+  ],
+  "metadata": {"source": "MOCK", "language": "en", "warnings": []}
+}

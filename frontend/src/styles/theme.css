@@ -1,0 +1,11 @@
+:root {
+  --background: 210 33% 98%;
+  --foreground: 222 47% 11%;
+  --muted: 216 24% 94%;
+  --muted-foreground: 218 11% 42%;
+  --border: 214 20% 86%;
+  --brand: 168 72% 30%;
+  --brand-foreground: 0 0% 100%;
+  --comp-bg: 0 0% 100%;
+  --destructive: 0 72% 48%;
+}

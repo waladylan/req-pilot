@@ -1,0 +1,83 @@
+services:
+  wfm-service:
+    build:
+      context: ./wfm-service
+    container_name: req-pilot-wfm-service
+    environment:
+      LLM_PROVIDER: ${LLM_PROVIDER:-openrouter}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o-mini}
+      OPENAI_BASE_URL: ${OPENAI_BASE_URL:-https://api.openai.com/v1}
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+      OPENROUTER_MODEL: ${OPENROUTER_MODEL:-deepseek/deepseek-chat}
+      OPENROUTER_BASE_URL: ${OPENROUTER_BASE_URL:-https://openrouter.ai/api/v1}
+      LLM_TIMEOUT_SECONDS: ${LLM_TIMEOUT_SECONDS:-60}
+      LLM_MAX_OUTPUT_TOKENS: ${LLM_MAX_OUTPUT_TOKENS:-4096}
+      LLM_TEMPERATURE: ${LLM_TEMPERATURE:-0.2}
+      WFM_PROMPT_VERSION: ${WFM_PROMPT_VERSION:-wfm-v1-python-001}
+      WFM_DEFAULT_VERSION: ${WFM_DEFAULT_VERSION:-2.0}
+      WFM_SERVICE_PORT: 8001
+    ports:
+      - "8001:8001"
+
+  backend:
+    build:
+      context: ./backend
+    container_name: req-pilot-backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+      wfm-service:
+        condition: service_started
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: req_pilot
+      POSTGRES_USER: req_pilot
+      POSTGRES_PASSWORD: req_pilot
+      WFM_SERVICE_BASE_URL: http://wfm-service:8001
+      WFM_SERVICE_TIMEOUT_MS: 70000
+      WFM_GENERATION_MODE: ${WFM_GENERATION_MODE:-AI}
+      WFM_VERSION: ${WFM_VERSION:-2.0}
+      WFM_GENERATION_ALLOW_FALLBACK: ${WFM_GENERATION_ALLOW_FALLBACK:-false}
+      REQUIREMENT_ANALYZER_MODE: ai
+      AI_PROVIDER: openrouter
+      AI_MODEL: deepseek/deepseek-chat
+      AI_API_KEY: ${AI_API_KEY:-}
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+      OPENROUTER_BASE_URL: ${OPENROUTER_BASE_URL:-https://openrouter.ai/api/v1}
+      OPENROUTER_DEFAULT_MODEL: ${OPENROUTER_DEFAULT_MODEL:-deepseek/deepseek-chat}
+      OPENROUTER_FALLBACK_MODEL_1: ${OPENROUTER_FALLBACK_MODEL_1:-qwen/qwen3-32b:nitro}
+      OPENROUTER_FALLBACK_MODEL_2: ${OPENROUTER_FALLBACK_MODEL_2:-deepseek/deepseek-chat-v3-0324}
+      OPENROUTER_TIMEOUT_SECONDS: 60
+      OPENROUTER_MAX_COMPLETION_TOKENS: 4096
+      OPENROUTER_TEMPERATURE: 0.2
+      AI_TIMEOUT_MS: 60000
+      AI_MAX_OUTPUT_TOKENS: 4096
+      AI_TEMPERATURE: 0.2
+      AI_FALLBACK_TO_RULE_BASED: true
+      AI_CACHE_ENABLED: true
+      AI_CACHE_TTL_DAYS: 30
+      AI_PROMPT_VERSION: requirement-to-wfm-v1
+    ports:
+      - "8081:8080"
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: req-pilot-postgres
+    environment:
+      POSTGRES_DB: req_pilot
+      POSTGRES_USER: req_pilot
+      POSTGRES_PASSWORD: req_pilot
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U req_pilot -d req_pilot"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:

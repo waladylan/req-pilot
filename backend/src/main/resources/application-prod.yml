@@ -1,0 +1,38 @@
+server:
+  forward-headers-strategy: framework
+  error:
+    include-message: never
+    include-stacktrace: never
+
+app:
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:}
+
+wfm:
+  generation:
+    mode: ${WFM_GENERATION_MODE:AI}
+    version: ${WFM_VERSION:2.0}
+    allow-fallback: ${WFM_GENERATION_ALLOW_FALLBACK:false}
+  service:
+    base-url: ${WORKFLOW_ENGINE_BASE_URL:${WFM_SERVICE_BASE_URL:http://workflow-engine:8001}}
+    timeout-ms: ${WFM_SERVICE_TIMEOUT_MS:70000}
+
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://${POSTGRES_HOST:postgres}:${POSTGRES_PORT:5432}/${POSTGRES_DB:req_pilot}}
+    username: ${SPRING_DATASOURCE_USERNAME:${DATABASE_USERNAME:${POSTGRES_USER:req_pilot}}}
+    password: ${SPRING_DATASOURCE_PASSWORD:${DATABASE_PASSWORD:${POSTGRES_PASSWORD:req_pilot}}}
+  jpa:
+    hibernate:
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:update}
+    open-in-view: false
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+
+logging:
+  level:
+    root: INFO
+    com.reqpilot: INFO
+    org.hibernate.SQL: WARN

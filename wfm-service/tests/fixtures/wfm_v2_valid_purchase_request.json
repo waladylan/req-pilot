@@ -1,0 +1,178 @@
+{
+  "wfmVersion": "2.0",
+  "workflowId": "purchase_request_approval",
+  "workflowName": "Purchase Request Approval",
+  "description": "Purchase request approval with manager and finance review.",
+  "direction": "LR",
+  "nodes": [
+    {
+      "id": "start",
+      "kind": "START",
+      "name": "Start",
+      "description": null,
+      "actor": null,
+      "data": {}
+    },
+    {
+      "id": "create_purchase_request",
+      "kind": "USER_TASK",
+      "name": "Create Purchase Request",
+      "description": null,
+      "actor": "User",
+      "data": {}
+    },
+    {
+      "id": "manager_approval",
+      "kind": "APPROVAL",
+      "name": "Manager Approval",
+      "description": null,
+      "actor": "Manager",
+      "data": {}
+    },
+    {
+      "id": "manager_approved",
+      "kind": "DECISION",
+      "name": "Manager Approved?",
+      "description": null,
+      "actor": null,
+      "data": {}
+    },
+    {
+      "id": "amount_over_threshold",
+      "kind": "DECISION",
+      "name": "Amount > 1000?",
+      "description": null,
+      "actor": null,
+      "data": {}
+    },
+    {
+      "id": "finance_approval",
+      "kind": "APPROVAL",
+      "name": "Finance Approval",
+      "description": null,
+      "actor": "Finance",
+      "data": {}
+    },
+    {
+      "id": "finance_approved",
+      "kind": "DECISION",
+      "name": "Finance Approved?",
+      "description": null,
+      "actor": null,
+      "data": {}
+    },
+    {
+      "id": "request_approved",
+      "kind": "END",
+      "name": "Request Approved",
+      "description": null,
+      "actor": null,
+      "data": {}
+    },
+    {
+      "id": "request_rejected",
+      "kind": "END",
+      "name": "Request Rejected",
+      "description": null,
+      "actor": null,
+      "data": {}
+    }
+  ],
+  "transitions": [
+    {
+      "id": "t_start_create",
+      "source": "start",
+      "target": "create_purchase_request",
+      "label": null,
+      "condition": null,
+      "outcome": null,
+      "data": {}
+    },
+    {
+      "id": "t_create_manager",
+      "source": "create_purchase_request",
+      "target": "manager_approval",
+      "label": null,
+      "condition": null,
+      "outcome": null,
+      "data": {}
+    },
+    {
+      "id": "t_manager_reviewed",
+      "source": "manager_approval",
+      "target": "manager_approved",
+      "label": null,
+      "condition": null,
+      "outcome": null,
+      "data": {}
+    },
+    {
+      "id": "t_manager_rejected",
+      "source": "manager_approved",
+      "target": "request_rejected",
+      "label": "Rejected",
+      "condition": null,
+      "outcome": "Rejected",
+      "data": {}
+    },
+    {
+      "id": "t_manager_approved",
+      "source": "manager_approved",
+      "target": "amount_over_threshold",
+      "label": "Approved",
+      "condition": null,
+      "outcome": "Approved",
+      "data": {}
+    },
+    {
+      "id": "t_amount_yes",
+      "source": "amount_over_threshold",
+      "target": "finance_approval",
+      "label": "Yes",
+      "condition": "Amount > 1000",
+      "outcome": null,
+      "data": {}
+    },
+    {
+      "id": "t_amount_no",
+      "source": "amount_over_threshold",
+      "target": "request_approved",
+      "label": "No",
+      "condition": "Amount <= 1000",
+      "outcome": null,
+      "data": {}
+    },
+    {
+      "id": "t_finance_reviewed",
+      "source": "finance_approval",
+      "target": "finance_approved",
+      "label": null,
+      "condition": null,
+      "outcome": null,
+      "data": {}
+    },
+    {
+      "id": "t_finance_approved",
+      "source": "finance_approved",
+      "target": "request_approved",
+      "label": "Approved",
+      "condition": null,
+      "outcome": "Approved",
+      "data": {}
+    },
+    {
+      "id": "t_finance_rejected",
+      "source": "finance_approved",
+      "target": "request_rejected",
+      "label": "Rejected",
+      "condition": null,
+      "outcome": "Rejected",
+      "data": {}
+    }
+  ],
+  "metadata": {
+    "source": "MOCK",
+    "language": "en",
+    "warnings": []
+  }
+}
